@@ -36,6 +36,11 @@ def extract_choice(output: str, choices: List[str]) -> str:
                 if key in answer_text:
                     return normalised_choices[key]
 
+    # Fallback: match with first known label found anywhere in output
+    for key in normalised_choices:
+        if key in output_clean:
+            return normalised_choices[key]
+
     return "unknown"
 
 
@@ -47,11 +52,13 @@ def analyse_sentiments(texts: List[str], user_prompt: str, output_choices: List[
         You are a machine for newspaper text sentiment classification.
         You will be given a text, and will need to analyse it in order to respond based on the given question.
         You are not asked to have an opinion on the topic, you must infer the sentiment given by the author of the text.
+        Give brief reasoning.
         You will then respond with your chosen classification, using only ONE of the given choice words.
 
         Text: {text}
         Question: {user_prompt}
         Classification choices: {output_choices}
+        Reasoning:
         Answer:
         """.strip()
 
