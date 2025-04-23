@@ -45,6 +45,7 @@ def extract_choice(output: str, choices: List[str]) -> str:
 
 
 def analyse_sentiments(texts: List[str], user_prompt: str, output_choices: List[str], model: str, max_workers=4, delay=0.2, debug=False) -> List[str]:
+    print("Starting analysis...", flush=True)
     def process_text(text):
         start_indiv = time.time()
         # tqdm.write(f"extracting sentiment '{text[:5]}...'")
