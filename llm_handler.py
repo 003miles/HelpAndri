@@ -24,10 +24,13 @@ def extract_choice(output: str, choices: List[str]) -> str:
 
 def analyse_sentiements(texts: List[str], user_prompt: str, output_choices: List[str], max_workers=4, delay=0.2) -> List[str]:
     start = time.time()
+    count = 0
+    total = len(texts)
 
     def process_text(text):
+        global count, total
         start_indiv = time.time()
-        print(f"extracting sentiment '{text[:5]}...'")
+        print(f"extracting sentiment '{text[:5]}...' number {count}")
         prompt = f"""
         You are a machine for newspaper text sentiment classification.
         You will be given a text, and will need to analyse it in order to respond based on the given question.
@@ -43,7 +46,8 @@ def analyse_sentiements(texts: List[str], user_prompt: str, output_choices: List
         output = ollama.chat(model="deepseek-r1:1.5b", messages=[{"role": "user", "content": prompt}])
         raw = output["message"]["content"]
         sentiment = extract_choice(raw, output_choices)
-        print(f"finished '{text[:5]}...' in {round(time.time() - start_indiv, 2)}s.")
+        print(f"finished '{text[:5]}...' in {round(time.time() - start_indiv, 2)}s. ({count}/{total}) been running for {round(time.time() - start, 2)}s")
+        count += 1
         return sentiment
 
     results: List = [None] * len(texts)
