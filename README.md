@@ -16,7 +16,9 @@ cd HelpAndri
 ```
 
 Install the required packages
-`pip install requirements.txt`
+```
+pip install requirements.txt
+```
 
 Run the script using
 ```
