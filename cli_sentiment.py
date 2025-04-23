@@ -16,6 +16,10 @@ def main():
         "model": "mistral",
         "columns": "title,quotes",
         "prompt": "In what light does the text explicitly portray migrants, immigrants, asylum seekers, or ethnic minorities? "
+                  "Negative only if the article itself promotes harmful views, stereotypes, or narratives that may worsen public opinion about the group."
+                  "(e.g. reporting that someone committed a crime as a member of that group, blaming them for societal problems, etc.)"
+                  "NOTE: Reporting on hate crimes, racism, or discrimination against a group does not imply negative sentiment — such stories may even increase empathy or awareness."
+                  "Do not classify as 'Negative' just because the article describes tragic events or discrimination. If the group is shown as the **victim** and the tone is sympathetic or neutral, the sentiment should be **Neutral or Positive**"
                   "Use unrelated to indicate that the text does not explicitly portray any of these groups in a light that is not positive, negative or neutral.",
         "choices": "positive,negative,neutral,unrelated",
         "sample": 1000,
@@ -28,8 +32,8 @@ def main():
     parser.add_argument("--columns", type=str, default=defaults["columns"], help="Comma-separated list of columns to analyze.")
     parser.add_argument("--prompt", type=str, default=defaults["prompt"], help="Classification prompt.")
     parser.add_argument("--choices", type=str, default=defaults["choices"], help="Comma-separated sentiment choices (e.g. positive,negative,neutral).")
-    parser.add_argument("--sample", type=int, default=defaults["sample"], help="Sample size for dataset (default 1000)")
-    parser.add_argument("--workers", type=int, default=defaults["workers"], help="Max workers for cpu threading (default 4)")
+    parser.add_argument("--sample", type=int, default=defaults["sample"], help="Sample size for dataset (default 1000).")
+    parser.add_argument("--workers", type=int, default=defaults["workers"], help="Max workers for cpu threading (default 4).")
     parser.add_argument("--debug", action="store_true", help="Enable debug mode.")
     parser.add_argument("--full", action="store_true", help="Run full analysis (default is sample only).")
 
