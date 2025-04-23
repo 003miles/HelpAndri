@@ -13,7 +13,7 @@ os.makedirs(RESULT_DIR, exist_ok=True)
 
 def main():
     defaults = {
-        "model": "deepseek-r1:7b",
+        "model": "mistral",
         "columns": "title,quotes",
         "prompt": "How does the text portray migrants, immigrants, asylum seekers, or ethnic minorities?",
         "choices": "positive,negative,neutral",
