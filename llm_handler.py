@@ -38,7 +38,7 @@ def extract_choice(output: str, choices: List[str]) -> str:
     return "unknown"
 
 
-def analyse_sentiements(texts: List[str], user_prompt: str, output_choices: List[str], model: str, max_workers=4, delay=0.2, debug=False) -> List[str]:
+def analyse_sentiments(texts: List[str], user_prompt: str, output_choices: List[str], model: str, max_workers=4, delay=0.2, debug=False) -> List[str]:
     start = time.time()
     count = 0
     total = len(texts)
@@ -116,7 +116,7 @@ def test():
     in what light does it portray migrants, immigrants, asylum seekers, or ethnic minorities? 
     """
 
-    output_sentiments = analyse_sentiements(test_strings, prompt, choices)
+    output_sentiments = analyse_sentiments(test_strings, prompt, choices)
 
     result = zip(test_strings, output_sentiments)
 

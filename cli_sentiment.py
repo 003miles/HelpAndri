@@ -3,7 +3,7 @@ import uuid
 import shutil
 import argparse
 import pandas as pd
-from llm_handler import analyse_sentiements
+from llm_handler import analyse_sentiments
 
 UPLOAD_DIR = "temp_uploads"
 RESULT_DIR = "temp_results"
@@ -63,7 +63,7 @@ def main():
         df = df.sample(n=args.sample, random_state=42)
 
     df["__combined_text"] = df[columns].astype(str).agg(" ".join, axis=1)
-    sentiments = analyse_sentiements(df["__combined_text"].tolist(), args.prompt, choices, model, max_workers=workers, debug=debug)
+    sentiments = analyse_sentiments(df["__combined_text"].tolist(), args.prompt, choices, model, max_workers=workers, debug=debug)
     df["Sentiment"] = sentiments
 
     output_path = os.path.join(RESULT_DIR, f"annotated_{filename}_{uuid.uuid4()}.csv")
