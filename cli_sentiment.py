@@ -31,6 +31,7 @@ def main():
     parser.add_argument("--sample", type=int, default=defaults["sample"], help="Sample size for dataset (default 1000)")
     parser.add_argument("--workers", type=int, default=defaults["workers"], help="Max workers for cpu threading (default 4)")
     parser.add_argument("--debug", action="store_true", help="Enable debug mode.")
+    parser.add_argument("--full", action="store_true", help="Run full analysis (default is sample only).")
 
     args = parser.parse_args()
 
@@ -60,7 +61,7 @@ def main():
         return
 
     # Optional sampling
-    if args.sample and args.sample < len(df):
+    if not args.full and args.sample and args.sample < len(df):
         df = df.sample(n=args.sample, random_state=42)
 
     df["__combined_text"] = df[columns].astype(str).agg(" ".join, axis=1)
