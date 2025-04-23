@@ -52,12 +52,14 @@ def analyse_sentiments(texts: List[str], user_prompt: str, output_choices: List[
         You are a machine for newspaper text sentiment classification.
         You will be given a text, and will need to analyse it in order to respond based on the given question.
         You are not asked to have an opinion on the topic, you must infer the sentiment given by the author of the text.
-        Give brief reasoning.
+        Give a brief reasoning, to explain your decision.
         You will then respond with your chosen classification, using only ONE of the given choice words.
 
         Text: {text}
         Question: {user_prompt}
         Classification choices: {output_choices}
+        
+        RESPOND AS BELOW
         Reasoning:
         Answer:
         """.strip()
