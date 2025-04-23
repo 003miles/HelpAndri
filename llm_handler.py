@@ -2,6 +2,7 @@ from typing import List
 import ollama
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import time
+from tqdm import tqdm
 
 
 def format_duration(seconds):
@@ -39,14 +40,9 @@ def extract_choice(output: str, choices: List[str]) -> str:
 
 
 def analyse_sentiments(texts: List[str], user_prompt: str, output_choices: List[str], model: str, max_workers=4, delay=0.2, debug=False) -> List[str]:
-    start = time.time()
-    count = 0
-    total = len(texts)
-
     def process_text(text):
-        global count, total
         start_indiv = time.time()
-        print(f"extracting sentiment '{text[:5]}...' number {count}")
+        # tqdm.write(f"extracting sentiment '{text[:5]}...'")
         prompt = f"""
         You are a machine for newspaper text sentiment classification.
         You will be given a text, and will need to analyse it in order to respond based on the given question.
@@ -62,18 +58,20 @@ def analyse_sentiments(texts: List[str], user_prompt: str, output_choices: List[
         output = ollama.chat(model=model, messages=[{"role": "user", "content": prompt}])
         raw = output["message"]["content"]
         sentiment = extract_choice(raw, output_choices)
-        print(f"finished '{text[:5]}...' in {round(time.time() - start_indiv, 2)}s. ({count}/{total}) been running for {format_duration(time.time() - start)}")
-        count += 1
+        # tqdm.write(f"finished '{text[:5]}...' in {round(time.time() - start_indiv, 2)}s.")
         return sentiment if not debug else raw
 
     results: List = [None] * len(texts)
+    start = time.time()
+
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        total = len(texts)
         futures = {}
         for i, text in enumerate(texts):
             futures[executor.submit(process_text, text)] = i
             time.sleep(delay)
 
-        for future in as_completed(futures):
+        for future in tqdm(as_completed(futures), total=total, desc="Analysing sentiments"):
             idx = futures[future]
             try:
                 results[idx] = future.result()
@@ -116,7 +114,7 @@ def test():
     in what light does it portray migrants, immigrants, asylum seekers, or ethnic minorities? 
     """
 
-    output_sentiments = analyse_sentiments(test_strings, prompt, choices)
+    output_sentiments = analyse_sentiments(test_strings, prompt, choices, model="deepseek-r1:1.5b", max_workers=4, debug=True)
 
     result = zip(test_strings, output_sentiments)
 
