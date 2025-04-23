@@ -22,9 +22,9 @@ def main():
 
     parser = argparse.ArgumentParser(description="Run sentiment classification on a CSV using an LLM.")
     parser.add_argument("--file", type=str, required=True, help="Path to the input CSV file.")
-    parser.add_argument("--columns", type=str, default=defaults["columns"], required=True, help="Comma-separated list of columns to analyze.")
-    parser.add_argument("--prompt", type=str, default=defaults["prompt"], required=True, help="Classification prompt.")
-    parser.add_argument("--choices", type=str, default=defaults["choices"], required=True, help="Comma-separated sentiment choices (e.g. positive,negative,neutral).")
+    parser.add_argument("--columns", type=str, default=defaults["columns"], help="Comma-separated list of columns to analyze.")
+    parser.add_argument("--prompt", type=str, default=defaults["prompt"], help="Classification prompt.")
+    parser.add_argument("--choices", type=str, default=defaults["choices"], help="Comma-separated sentiment choices (e.g. positive,negative,neutral).")
     parser.add_argument("--sample", type=int, default=defaults["sample"], help="Sample size for dataset (default 1000)")
     parser.add_argument("--workers", type=int, default=defaults["workers"], help="Max workers for cpu threading (default 4)")
 
