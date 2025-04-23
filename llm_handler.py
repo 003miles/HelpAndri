@@ -59,7 +59,7 @@ def analyse_sentiments(texts: List[str], user_prompt: str, output_choices: List[
         Question: {user_prompt}
         Classification choices: {output_choices}
         
-        RESPOND AS BELOW
+        YOU MUST RESPOND FOLLOWING THE FORMAT BELOW
         Reasoning:
         Answer:
         """.strip()
