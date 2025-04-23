@@ -15,8 +15,9 @@ def main():
     defaults = {
         "model": "mistral",
         "columns": "title,quotes",
-        "prompt": "How does the text portray migrants, immigrants, asylum seekers, or ethnic minorities?",
-        "choices": "positive,negative,neutral",
+        "prompt": "In what light does the text explicitly portray migrants, immigrants, asylum seekers, or ethnic minorities? "
+                  "Use unrelated to indicate that the text does not explicitly portray any of these groups in a light that is not positive, negative or neutral.",
+        "choices": "positive,negative,neutral,unrelated",
         "sample": 1000,
         "workers": 4
     }
