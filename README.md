@@ -6,7 +6,7 @@
 ## Usage
 Run the following command in your terminal
 ```
-ollama pull deepseek-r1:1.5b
+ollama pull mistral
 ```
 
 Clone the repository
