@@ -4,6 +4,22 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import time
 
 
+def format_duration(seconds):
+    seconds = int(seconds)
+    hours, remainder = divmod(seconds, 3600)
+    minutes, seconds = divmod(remainder, 60)
+
+    parts = []
+    if hours > 0:
+        parts.append(f"{hours} hour{'s' if hours != 1 else ''}")
+    if minutes > 0:
+        parts.append(f"{minutes} minute{'s' if minutes != 1 else ''}")
+    if seconds > 0 or not parts:
+        parts.append(f"{seconds} second{'s' if seconds != 1 else ''}")
+
+    return " ".join(parts)
+
+
 def extract_choice(output: str, choices: List[str]) -> str:
     output_clean = output.strip().lower()
 
@@ -22,7 +38,7 @@ def extract_choice(output: str, choices: List[str]) -> str:
     return "unknown"
 
 
-def analyse_sentiements(texts: List[str], user_prompt: str, output_choices: List[str], max_workers=4, delay=0.2) -> List[str]:
+def analyse_sentiements(texts: List[str], user_prompt: str, output_choices: List[str], model: str, max_workers=4, delay=0.2, debug=False) -> List[str]:
     start = time.time()
     count = 0
     total = len(texts)
@@ -43,12 +59,12 @@ def analyse_sentiements(texts: List[str], user_prompt: str, output_choices: List
         Answer:
         """.strip()
 
-        output = ollama.chat(model="deepseek-r1:1.5b", messages=[{"role": "user", "content": prompt}])
+        output = ollama.chat(model=model, messages=[{"role": "user", "content": prompt}])
         raw = output["message"]["content"]
         sentiment = extract_choice(raw, output_choices)
-        print(f"finished '{text[:5]}...' in {round(time.time() - start_indiv, 2)}s. ({count}/{total}) been running for {round(time.time() - start, 2)}s")
+        print(f"finished '{text[:5]}...' in {round(time.time() - start_indiv, 2)}s. ({count}/{total}) been running for {format_duration(time.time() - start)}")
         count += 1
-        return sentiment
+        return sentiment if not debug else raw
 
     results: List = [None] * len(texts)
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
@@ -65,7 +81,7 @@ def analyse_sentiements(texts: List[str], user_prompt: str, output_choices: List
                 print(f"Error on prompt {idx}: {e}")
                 results[idx] = "error"
 
-    print(f"Finished in {round(time.time() - start, 2)}s")
+    print(f"Finished in {format_duration(time.time() - start)}")
     return results
 
 
