@@ -28,7 +28,7 @@ def extract_choice(output: str, choices: List[str]) -> str:
 
     for line in reversed(output_clean.splitlines()):
         if line.startswith("answer:"):
-            answer_text = line.replace("answer:", "").strip()
+            answer_text = line.split()[1].strip()
             if answer_text in normalised_choices:
                 return normalised_choices[answer_text]
 
