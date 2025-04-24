@@ -3,7 +3,8 @@ import ollama
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import time
 from tqdm import tqdm
-
+import re
+from typing import List
 
 def format_duration(seconds):
     seconds = int(seconds)
@@ -20,31 +21,30 @@ def format_duration(seconds):
 
     return " ".join(parts)
 
-
-import re
-from typing import List
-
 def extract_choice(output: str, choices: List[str]) -> str:
     output_clean = output.strip().lower()
     normalized_choices = {choice.lower(): choice for choice in choices}
 
-    # 1. Look for an "Answer: <word>" line using regex
-    answer_match = re.search(r"answer\s*[:\-]?\s*(\w+)", output_clean, re.IGNORECASE)
+    # 1. Match answer line with optional quotes around the word
+    answer_match = re.search(
+        r'answer\s*[:\-]?\s*[\"“”\'‘’]?(?P<word>\w+)[\"“”\'‘’]?',
+        output_clean,
+        re.IGNORECASE
+    )
     if answer_match:
-        answer = answer_match.group(1).strip().lower()
+        answer = answer_match.group("word").lower()
         if answer in normalized_choices:
             return normalized_choices[answer]
 
-    # 2. Look for any exact choice as a standalone word at the end of the output
-    lines = output_clean.splitlines()
-    for line in reversed(lines):
-        for key in normalized_choices:
-            if re.fullmatch(rf"\b{key}\b", line.strip()):
-                return normalized_choices[key]
+    # 2. Look for standalone line with just the answer (possibly in quotes)
+    for line in reversed(output_clean.splitlines()):
+        line_stripped = line.strip().strip('"\''"“”‘’")
+        if line_stripped in normalized_choices:
+            return normalized_choices[line_stripped]
 
-    # 3. Look for any known label anywhere in the output (fuzzy fallback)
+    # 3. Fallback: look for the first match of a valid choice in the full output
     for key in normalized_choices:
-        if re.search(rf"\b{key}\b", output_clean):
+        if re.search(rf'\b{re.escape(key)}\b', output_clean):
             return normalized_choices[key]
 
     return "unknown"
