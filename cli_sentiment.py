@@ -71,9 +71,11 @@ def main():
     if not args.full and args.sample and args.sample < len(df):
         df = df.sample(n=args.sample, random_state=42)
 
+
+    df["__combined_text"] = df[columns].astype(str).agg(" ".join, axis=1)
+    sentiments = analyse_sentiments(df["__combined_text"].tolist(), args.prompt, choices, model, max_workers=workers, debug=debug)
+
     if not args.dryrun:
-        df["__combined_text"] = df[columns].astype(str).agg(" ".join, axis=1)
-        sentiments = analyse_sentiments(df["__combined_text"].tolist(), args.prompt, choices, model, max_workers=workers, debug=debug)
         df["Sentiment"] = sentiments
         if debug:
             df["Classification"] = df["Sentiment"].apply(extract_choice, choices=choices)
