@@ -36,7 +36,7 @@ def extract_choice(output: str, choices: List[str]) -> str:
                 if key in answer_text:
                     return normalised_choices[key]
 
-    # Fallback: match with first known label found anywhere in output
+    # Fallback: match with first-known-label found anywhere in the output
     for key in normalised_choices:
         if key in output_clean:
             return normalised_choices[key]

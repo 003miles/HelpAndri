@@ -12,15 +12,13 @@ os.makedirs(RESULT_DIR, exist_ok=True)
 
 
 def main():
+    with open("prompt.txt", "r+") as f:
+        file_prompt = f.read()
+
     defaults = {
         "model": "mistral",
         "columns": "title,quotes",
-        "prompt": "In what light does the text explicitly portray migrants, immigrants, asylum seekers, or ethnic minorities? "
-                  "Negative only if the article itself promotes harmful views, stereotypes, or narratives that may worsen public opinion about the group."
-                  "(e.g. reporting that someone committed a crime as a member of that group, blaming them for societal problems, etc.)"
-                  "NOTE: Reporting on hate crimes, racism, or discrimination against a group does not imply negative sentiment — such stories may even increase empathy or awareness."
-                  "Do not classify as 'Negative' just because the article describes tragic events or discrimination. If the group is shown as the **victim** and the tone is sympathetic or neutral, the sentiment should be **Neutral or Positive**"
-                  "Use unrelated to indicate that the text does not explicitly portray any of these groups in a light that is not positive, negative or neutral.",
+        "prompt": file_prompt,
         "choices": "positive,negative,neutral,unrelated",
         "sample": 1000,
         "workers": 4
