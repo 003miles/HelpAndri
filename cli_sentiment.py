@@ -53,13 +53,13 @@ def main():
     choices = [c.strip() for c in args.choices.split(",")]
 
     try:
-        df = pd.read_csv(upload_path)
+        df = pd.read_excel(upload_path)
     except Exception as e:
-        print(f"❌ CSV parsing error: {e}")
+        print(f"Excel parsing error: {e}\nTrying CSV instead...")
         try:
-            df = pd.read_excel(upload_path)
+            df = pd.read_csv(upload_path)
         except Exception as e:
-            print(f"Excel parsing error: {e}")
+            print(f"❌ CSV parsing error: {e}")
             return
 
     if not all(col in df.columns for col in columns):
