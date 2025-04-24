@@ -34,6 +34,7 @@ def main():
     parser.add_argument("--workers", type=int, default=defaults["workers"], help="Max workers for cpu threading (default 4).")
     parser.add_argument("--debug", action="store_true", help="Enable debug mode.")
     parser.add_argument("--full", action="store_true", help="Run full analysis (default is sample only).")
+    parser.add_argument("--dryrun", action="store_true", help="Run without saving results.")
 
     args = parser.parse_args()
 
@@ -70,15 +71,16 @@ def main():
     if not args.full and args.sample and args.sample < len(df):
         df = df.sample(n=args.sample, random_state=42)
 
-    df["__combined_text"] = df[columns].astype(str).agg(" ".join, axis=1)
-    sentiments = analyse_sentiments(df["__combined_text"].tolist(), args.prompt, choices, model, max_workers=workers, debug=debug)
-    df["Sentiment"] = sentiments
-    if debug:
-        df["Classification"] = df["Sentiment"].apply(extract_choice, choices=choices)
+    if not args.dryrun:
+        df["__combined_text"] = df[columns].astype(str).agg(" ".join, axis=1)
+        sentiments = analyse_sentiments(df["__combined_text"].tolist(), args.prompt, choices, model, max_workers=workers, debug=debug)
+        df["Sentiment"] = sentiments
+        if debug:
+            df["Classification"] = df["Sentiment"].apply(extract_choice, choices=choices)
 
-    output_path = os.path.join(RESULT_DIR, f"annotated_{filename}_{uuid.uuid4()}.csv")
-    df.to_csv(output_path, index=False)
-    print(f"✅ Sentiment analysis complete! Output saved to: {output_path}")
+        output_path = os.path.join(RESULT_DIR, f"annotated_{filename}_{uuid.uuid4()}.csv")
+        df.to_csv(output_path, index=False)
+        print(f"✅ Sentiment analysis complete! Output saved to: {output_path}")
 
 
 if __name__ == "__main__":
