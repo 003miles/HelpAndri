@@ -55,7 +55,11 @@ def main():
         df = pd.read_csv(upload_path)
     except Exception as e:
         print(f"❌ CSV parsing error: {e}")
-        return
+        try:
+            df = pd.read_excel(upload_path)
+        except Exception as e:
+            print(f"Excel parsing error: {e}")
+            return
 
     if not all(col in df.columns for col in columns):
         print("❌ One or more selected columns do not exist in the CSV.")
