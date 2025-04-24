@@ -25,6 +25,11 @@ def extract_choice(output: str, choices: List[str]) -> str:
     output_clean = output.strip().lower()
     normalized_choices = {choice.lower(): choice for choice in choices}
 
+    # Helper: match valid label from captured group
+    def normalize_and_match(label):
+        label = label.lower().strip(' "\'“”‘’.,;')
+        return normalized_choices.get(label, None)
+
     # 1. Match answer line with optional quotes around the word
     answer_match = re.search(
         r'answer\s*[:\-]?\s*[\"“”\'‘’]?(?P<word>\w+)[\"“”\'‘’]?',
@@ -36,13 +41,26 @@ def extract_choice(output: str, choices: List[str]) -> str:
         if answer in normalized_choices:
             return normalized_choices[answer]
 
-    # 2. Look for standalone line with just the answer (possibly in quotes)
+
+    # 2. Regex: classification is '<label>' or it can be considered '<label>'
+    classification_match = re.search(
+        r"(classification\s+is|can\s+be\s+considered|it\s+is)\s+[\"\']?(?P<word>\w+)[\"\']?",
+        output_clean,
+        re.IGNORECASE
+    )
+    if classification_match:
+        answer = normalize_and_match(classification_match.group("word"))
+        if answer:
+            return answer
+
+
+    # 3. Look for standalone line with just the answer (possibly in quotes)
     for line in reversed(output_clean.splitlines()):
         line_stripped = line.strip().strip('"\''"“”‘’")
         if line_stripped in normalized_choices:
             return normalized_choices[line_stripped]
 
-    # 3. Fallback: look for the first match of a valid choice in the full output
+    # 4. Fallback: look for the first match of a valid choice in the full output
     for key in normalized_choices:
         if re.search(rf'\b{re.escape(key)}\b', output_clean):
             return normalized_choices[key]
