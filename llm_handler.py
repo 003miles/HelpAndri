@@ -21,28 +21,33 @@ def format_duration(seconds):
     return " ".join(parts)
 
 
+import re
+from typing import List
+
 def extract_choice(output: str, choices: List[str]) -> str:
     output_clean = output.strip().lower()
+    normalized_choices = {choice.lower(): choice for choice in choices}
 
-    normalised_choices = {choice.lower(): choice for choice in choices}
+    # 1. Look for an "Answer: <word>" line using regex
+    answer_match = re.search(r"answer\s*[:\-]?\s*(\w+)", output_clean, re.IGNORECASE)
+    if answer_match:
+        answer = answer_match.group(1).strip().lower()
+        if answer in normalized_choices:
+            return normalized_choices[answer]
 
-    for line in reversed(output_clean.splitlines()):
-        if line.startswith("answer:"):
-            answer_text = line.split()[1].strip()
-            if answer_text in normalised_choices:
-                return normalised_choices[answer_text]
+    # 2. Look for any exact choice as a standalone word at the end of the output
+    lines = output_clean.splitlines()
+    for line in reversed(lines):
+        for key in normalized_choices:
+            if re.fullmatch(rf"\b{key}\b", line.strip()):
+                return normalized_choices[key]
 
-            for key in normalised_choices:
-                if key in answer_text:
-                    return normalised_choices[key]
-
-    # Fallback: match with first-known-label found anywhere in the output
-    for key in normalised_choices:
-        if key in output_clean:
-            return normalised_choices[key]
+    # 3. Look for any known label anywhere in the output (fuzzy fallback)
+    for key in normalized_choices:
+        if re.search(rf"\b{key}\b", output_clean):
+            return normalized_choices[key]
 
     return "unknown"
-
 
 def analyse_sentiments(texts: List[str], user_prompt: str, output_choices: List[str], model: str, max_workers=4, delay=0.2, debug=False) -> List[str]:
     print("Starting analysis...", flush=True)
