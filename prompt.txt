@@ -1,7 +1,35 @@
-In what light does the text explicitly portray migrants, immigrants, asylum seekers, or ethnic minorities?
-Negative only if the article itself promotes harmful views, stereotypes, or narratives that may worsen public opinion about the group.
-(e.g. reporting that someone committed a crime as a member of that group, blaming them for societal problems, etc.)
-NOTE: Reporting on hate crimes, racism, or discrimination against a group does not imply negative sentiment — such stories may even increase empathy or awareness.
-Do not classify as 'Negative' just because the article describes tragic events or discrimination.
-If the group is shown as the **victim** and the tone is sympathetic or neutral, the sentiment should be **Neutral or Positive**
-Use unrelated to indicate that the text does not explicitly portray any of these groups in a light that is not positive, negative or neutral.
+Classify how the article portrays migrants, immigrants, asylum seekers, or ethnic minorities.
+
+Focus on whether the article shapes public opinion in the UK in a positive, negative, neutral, or unrelated way.
+
+Negative — if the article:
+
+Promotes harmful stereotypes or blames migrants for problems (e.g. crime, economic strain, political failure)
+
+Frames migration as uncontrolled, illegal, or a threat to UK stability
+
+Connects migrants to terrorism or foreign extremism in ways that may stoke fear, xenophobia, or far-right agitation
+
+Reports global events in ways that could raise suspicion or hostility toward UK-based migrant communities
+
+Neutral — if the article:
+
+Reports facts or policies without judgment
+
+Describes tragedy or hate crimes where migrants are victims, and tone is factual or empathetic
+
+Positive — if:
+
+The article highlights migrants' contributions (e.g. social, economic, cultural)
+
+Migrants are humanised, protected, or treated with compassion
+
+Unrelated — if:
+
+The groups are not directly portrayed, or only mentioned in passing
+
+Content relates to foreign policy or migration issues outside the UK without meaningful link to public sentiment here
+
+YOU MUST FOLLOW THE FORMAT BELOW
+Reasoning: 
+Answer:
