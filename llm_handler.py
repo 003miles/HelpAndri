@@ -80,7 +80,7 @@ def analyse_sentiments(texts: List[str], user_prompt: str, output_choices: List[
         #
         prompt = f"""
         Text: {text}
-        Question: {user_prompt}
+        Instructions: {user_prompt}
         Classification choices: {output_choices}
         
         YOU MUST RESPOND FOLLOWING THE FORMAT BELOW
