@@ -12,13 +12,11 @@ os.makedirs(RESULT_DIR, exist_ok=True)
 
 
 def main():
-    with open("prompt.txt", "r+") as f:
-        file_prompt = f.read()
 
     defaults = {
         "model": "mistral",
         "columns": "title,quotes",
-        "prompt": file_prompt,
+        "prompt": "prompt.txt",
         "choices": "positive,negative,neutral,unrelated",
         "sample": 1000,
         "workers": 4
@@ -28,7 +26,7 @@ def main():
     parser.add_argument("--file", type=str, required=True, help="Path to the input CSV file.")
     parser.add_argument("--model", type=str, default=defaults["model"], help="Model to use for sentiment classification.")
     parser.add_argument("--columns", type=str, default=defaults["columns"], help="Comma-separated list of columns to analyze.")
-    parser.add_argument("--prompt", type=str, default=defaults["prompt"], help="Classification prompt (uses prompt.txt by default).")
+    parser.add_argument("--prompt", type=str, default=defaults["prompt"], help="Classification prompt text file (uses prompt.txt by default).")
     parser.add_argument("--choices", type=str, default=defaults["choices"], help="Comma-separated sentiment choices (e.g. positive,negative,neutral).")
     parser.add_argument("--sample", type=int, default=defaults["sample"], help="Sample size for dataset (default 1000).")
     parser.add_argument("--workers", type=int, default=defaults["workers"], help="Max workers for cpu threading (default 4).")
@@ -44,6 +42,9 @@ def main():
     filename = os.path.basename(input_path)
     upload_path = os.path.join(UPLOAD_DIR, f"{file_id}_{filename}")
     shutil.copy(input_path, upload_path)
+
+    with open(args.prompt, "r+") as f:
+        prompt_text = f.read()
 
     model = args.model
     workers = args.workers
@@ -73,7 +74,7 @@ def main():
 
 
     df["__combined_text"] = df[columns].astype(str).agg(" ".join, axis=1)
-    sentiments = analyse_sentiments(df["__combined_text"].tolist(), args.prompt, choices, model, max_workers=workers, debug=debug)
+    sentiments = analyse_sentiments(df["__combined_text"].tolist(), prompt_text, choices, model, max_workers=workers, debug=debug)
 
     if not args.dryrun:
         df["Sentiment"] = sentiments
