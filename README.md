@@ -1,4 +1,4 @@
-# Help Andri
+# PressScan
 ## Required Installations
 - [Ollama](https://ollama.com/download)
 - [Python](https://www.python.org/downloads/)
