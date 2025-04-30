@@ -5,6 +5,10 @@ authors:
   family-names: Bambaga-Flower
   given-names: Miles
   orcid: 0009-0005-9919-1015
+- affiliation: University of Southampton
+  family-names: Robos
+  given-names: Andri
+  orcid: 0009-0008-7488-2727
 cff-version: 1.2.0
 date-released: '2025-04-30'
 doi: 10.5281/zenodo.15310346
