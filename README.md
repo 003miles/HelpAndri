@@ -2,6 +2,8 @@
 PressScan is a command-line Python tool for high-volume sentiment classification of `.csv` or `.xlsx` text datasets using a local large language model (LLM).
 
 Built for large-scale projects such as news article analysis, where public LLM APIs would be too slow, expensive, or rate-limited.
+
+[*Full documentation*](https://github.com/003miles/PressScan/wiki)
 ## Prerequisites
 Before you begin, ensure you have the following installed
 - [Ollama](https://ollama.com/download) - For running LLM models locally
