@@ -76,4 +76,5 @@ temp_results/annotated_dataset.csv_899f4b62-0383-4f87-9d9d-e86b2249186c.csv
 ### Notes
 - **Ollama** automatically manages GPU acceleration if available (especially useful for large datasets).
 - Default prompt uses **reasoning first** then **final answer** to improve model accuracy (Chain-of-Thought prompting [Wei et al., 2022]).
-- [RunPod](https://runpod.io/) or other cloud compute services can be used for faster batch processing.
+- RunPod or other cloud compute services can be used for faster batch processing.
+  - [Setup Guide](https://github.com/003miles/PressScan/wiki#using-runpod-for-cloud-execution-recommended-for-large-datasets)
