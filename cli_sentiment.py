@@ -12,7 +12,6 @@ os.makedirs(RESULT_DIR, exist_ok=True)
 
 
 def main():
-
     defaults = {
         "model": "mistral",
         "columns": "title,quotes",
