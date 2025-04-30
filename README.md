@@ -61,6 +61,7 @@ python cli_sentiment.py --file dataset.csv --model mistral --columns title,quote
 | `--debug`   | Output full LLM reasoning text along with answers         |
 | `--full`    | Ignore sampling and run on the entire dataset             |
 | `--dryrun`  | Process without saving the output CSV                     |
+
 You can see help any time:
 ```bash
 python cli_sentiment.py --help
