@@ -1,0 +1,17 @@
+abstract: PressScan is a command-line Python tool for high-volume sentiment classification
+  of .csv or .xlsx text datasets using a local large language model (LLM).
+authors:
+- family-names: 003miles
+cff-version: 1.2.0
+date-released: '2025-04-30'
+doi: 10.5281/zenodo.15310346
+identifiers:
+- type: swh
+  value: swh:1:dir:474d5e1cb6cd4ecd9e59ce164907d6c7641aab58;origin=https://doi.org/10.5281/zenodo.15310183;visit=swh:1:snp:246cc7a21006e88c35356afd30c292b4273d05d5;anchor=swh:1:rel:51ae10ba02ee66360e7790af02fd48173074368e;path=003miles-PressScan-e6d1bc5
+license:
+- cc-by-4.0
+message: If you use this software, please cite it using the metadata from this file.
+repository-code: https://github.com/003miles/PressScan/tree/v1.0.0
+title: '003miles/PressScan: PressScan v1.0.0'
+type: software
+version: v1.0.0
