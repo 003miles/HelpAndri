@@ -1,4 +1,6 @@
 # PressScan 
+<img width="1512" alt="HELPANDRI RUNNING crop" src="https://github.com/user-attachments/assets/8c903cd7-6eca-47c9-97ae-bebbe4cd8526" />
+
 PressScan is a command-line Python tool for high-volume sentiment classification of `.csv` or `.xlsx` text datasets using a local large language model (LLM).
 
 Built for large-scale projects such as news article analysis, where public LLM APIs would be too slow, expensive, or rate-limited.
